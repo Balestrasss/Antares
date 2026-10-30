@@ -150,9 +150,9 @@ void registrarAmostra(const Amostra &a);
 void descarregarBufferNaFlash();
 void tratarPouso();
 bool transferirFlashParaSD();
-void proximoNomeLivre(fs::FS &fs, const char* prefixo, char* saida, size_t tam);          // [ARMAZENAMENTO]
-bool copiarArquivo(fs::FS &de, const char* origem, fs::FS &para, const char* destino);   // [ARMAZENAMENTO]
-void enviarVoosAntigosParaSD();                                                           // [ARMAZENAMENTO]
+void proximoNomeLivre(fs::FS &fs, const char* prefixo, char* saida, size_t tam);          // ARMA
+bool copiarArquivo(fs::FS &de, const char* origem, fs::FS &para, const char* destino);   // ARMA
+void enviarVoosAntigosParaSD();                                                           // ARMA
 
 void setup() {
   Serial.begin(115200);
@@ -346,8 +346,8 @@ void mostrarResumoDeteccao() {
   Serial.println("======== RESUMO DOS SENSORES ========");
   Serial.print("MPU6050 (Secundario): "); Serial.println(mpuDetectado ? "OK" : "FALHOU");
   Serial.print("BME280  (Primario):   "); Serial.println(bmeDetectado ? "OK" : "FALHOU");
-  Serial.print("Flash:                "); Serial.println(flashDetectada ? "OK" : "FALHOU");   // [ARMAZENAMENTO]
-  Serial.print("Cartao SD:            "); Serial.println(sdGravando ? "OK (gravando direto)" : "FALHOU"); // [ARMAZENAMENTO]
+  Serial.print("Flash:                "); Serial.println(flashDetectada ? "OK" : "FALHOU");   // ARMA
+  Serial.print("Cartao SD:            "); Serial.println(sdGravando ? "OK (gravando direto)" : "FALHOU"); // ARMA
   Serial.println("======================================");
 }
 
@@ -373,14 +373,14 @@ void inicializarFlash() {
   }
   // [ARMAZENAMENTO] Antes: voo.csv -> voo_anterior.csv e o voo_anterior antigo era APAGADO.
   // Agora o voo anterior vira /voo_NNN.csv na flash (nada e apagado) e e enviado ao SD no boot.
-  const char* antigos[] = { ARQUIVO_ANTERIOR, ARQUIVO_FLASH };                 // [ARMAZENAMENTO]
-  for (int i = 0; i < 2; i++) {                                               // [ARMAZENAMENTO]
-    if (LittleFS.exists(antigos[i])) {                                        // [ARMAZENAMENTO]
-      char novo[24];                                                          // [ARMAZENAMENTO]
-      proximoNomeLivre(LittleFS, "voo", novo, sizeof(novo));                  // [ARMAZENAMENTO]
-      LittleFS.rename(antigos[i], novo);                                      // [ARMAZENAMENTO]
-    }                                                                         // [ARMAZENAMENTO]
-  }                                                                           // [ARMAZENAMENTO]
+  const char* antigos[] = { ARQUIVO_ANTERIOR, ARQUIVO_FLASH };                 // ARMA
+  for (int i = 0; i < 2; i++) {                                               // ARMA
+    if (LittleFS.exists(antigos[i])) {                                        // ARMA
+      char novo[24];                                                          // ARMA
+      proximoNomeLivre(LittleFS, "voo", novo, sizeof(novo));                  // ARMa
+      LittleFS.rename(antigos[i], novo);                                      // ARMA
+    }                                                                         // ARMA
+  }                                                                           // ARMA
   arquivoFlash = LittleFS.open(ARQUIVO_FLASH, "w");
   if (arquivoFlash) {
     arquivoFlash.println("tempo_us,estado,vel_vertical,altura_m,altura_maxima_m,accel_x,accel_y,accel_z,giro_x,giro_y,giro_z,temp_mpu_c,temp_bme_c,umidade_pct,pressao_hpa");
